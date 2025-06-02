@@ -1,4 +1,3 @@
-import { useId } from "react";
 import Card from "../UI/Card";
 import classes from "./ProductItem.module.css";
 //1.4
@@ -35,3 +34,6 @@ const ProductItem = (props) => {
 };
 
 export default ProductItem;
+
+
+//1-------------------------------------------------------

@@ -166,7 +166,63 @@
 
 
 
-//4 Using Action creator Thunk to move http calls out of the component
+// //4 Using Action creator Thunk to move http calls out of the component
+
+// import { useEffect } from "react";
+// import Cart from "./components/Cart/Cart";
+// import Layout from "./components/Layout/Layout";
+// import Products from "./components/Shop/Products";
+// import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
+// // import { uiActions } from "./store/ui-slice";
+// import Notification from "./components/UI/Notification";
+// import { Fragment } from "react";
+// //4.2 import the actionCreator THUNK function
+// import { sendCartData } from "./store/cart-slice";
+
+
+// let isInitial = true;
+
+// function App() {
+//   const cart = useSelector((state) => state.cart);
+//   const showCart = useSelector((state) => state.ui.cartIsVisible);
+//   const notification = useSelector((state) => state.ui.notification);
+//   const dispatch = useDispatch();
+
+//   //4.1 move dispatch actions to car Slice
+//   useEffect(() => {
+    
+//     if (isInitial === true) {
+//       isInitial = false;
+//       return;
+//     }
+//     //4.3 we always dispatch actions, but here 
+//     dispatch(sendCartData(cart))
+   
+//   }, [cart, dispatch]);
+
+//   return (
+//     <Fragment>
+//       {notification && (
+//         <Notification
+//           status={notification.status}
+//           title={notification.title}
+//           message={notification.message}
+//         />
+//       )}
+//       <Layout>
+//         {showCart && <Cart />}
+//         <Products />
+//       </Layout>
+//     </Fragment>
+//   );
+// }
+
+// export default App;
+
+//4-------------------------------------------------------------------------------------------
+
+//5 thunk action from sepearate file
 
 import { useEffect } from "react";
 import Cart from "./components/Cart/Cart";
@@ -177,8 +233,8 @@ import { useDispatch } from "react-redux";
 // import { uiActions } from "./store/ui-slice";
 import Notification from "./components/UI/Notification";
 import { Fragment } from "react";
-//4.2 import the actionCreator THUNK function
-import { sendCartData } from "./store/cart-slice";
+//5.2
+import { fetchCartData, sendCartData } from "./store/cart-actions";
 
 
 let isInitial = true;
@@ -189,15 +245,21 @@ function App() {
   const notification = useSelector((state) => state.ui.notification);
   const dispatch = useDispatch();
 
-  //4.1 move dispatch actions to car Slice
+//5.1 fetching the initial data from firebase
+  useEffect(()=>{
+    dispatch(fetchCartData())
+  },[dispatch])
+
   useEffect(() => {
     
     if (isInitial === true) {
       isInitial = false;
       return;
     }
-    //4.3 we always dispatch actions, but here 
-    dispatch(sendCartData(cart))
+    //5.3
+     if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
    
   }, [cart, dispatch]);
 

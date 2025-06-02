@@ -16,7 +16,6 @@ const CartButton = (props) => {
     dispatch(uiActions.toggle())
   }
   const cartQuantity = useSelector(state => state.cart.totalQuantity)
-  
 
   return (
     // 1.1
